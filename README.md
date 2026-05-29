@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AInsight
 
-## Getting Started
+AI & Embedded 行业资讯聚合平台，每日自动抓取 RSS、生成中文摘要。
 
-First, run the development server:
+## 技术栈
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **前端**: Next.js 14 (App Router) + TypeScript + TailwindCSS
+- **数据库**: Supabase (PostgreSQL)
+- **AI 摘要**: DeepSeek API
+- **数据管道**: GitHub Actions (每日 22:50 UTC 触发)
+- **部署**: Vercel
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 本地开发
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. 克隆仓库
+2. 复制 `.env.local.example` 为 `.env.local`，填入真实密钥
+3. 安装依赖: `npm install`
+4. 启动开发服务器: `npm run dev`
+5. 打开 http://localhost:3000
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 环境变量
 
-## Learn More
+| 变量 | 用途 |
+|------|------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase 项目 URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase 匿名密钥 |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase 服务密钥 (仅 GitHub Actions) |
+| `DEEPSEEK_API_KEY` | DeepSeek API 密钥 (仅 GitHub Actions) |
 
-To learn more about Next.js, take a look at the following resources:
+## 数据库设置
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. 在 [Supabase](https://supabase.com) 创建项目
+2. 在 SQL Editor 中运行 `supabase/schema.sql`
+3. 在 SQL Editor 中运行 `supabase/rls.sql`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 部署
 
-## Deploy on Vercel
+### Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. 将仓库推送到 GitHub
+2. 在 [Vercel](https://vercel.com) 导入项目
+3. 添加环境变量: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+4. 部署
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### GitHub Actions
+
+1. 在 GitHub 仓库 Settings -> Secrets 中添加:
+   - `SUPABASE_URL`
+   - `SUPABASE_SERVICE_ROLE_KEY`
+   - `DEEPSEEK_API_KEY`
+2. 工作流会每天 22:50 UTC (北京时间 6:50) 自动运行

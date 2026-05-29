@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
+
+export const dynamic = "force-dynamic";
 
 // POST: add favorite
 export async function POST(request: NextRequest) {
@@ -11,6 +13,8 @@ export async function POST(request: NextRequest) {
       { status: 400 }
     );
   }
+
+  const supabase = getSupabase();
 
   const { data, error } = await supabase
     .from("favorites")
@@ -35,6 +39,8 @@ export async function DELETE(request: NextRequest) {
       { status: 400 }
     );
   }
+
+  const supabase = getSupabase();
 
   const { error } = await supabase
     .from("favorites")

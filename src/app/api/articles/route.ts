@@ -1,12 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 import type { Category } from "@/lib/types";
+
+export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
   const category = searchParams.get("category") as Category | null;
   const date = searchParams.get("date"); // YYYY-MM-DD
   const tab = searchParams.get("tab") || "today"; // "today" | "bookmarked"
+
+  const supabase = getSupabase();
 
   let query = supabase
     .from("articles")
