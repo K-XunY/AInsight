@@ -8,8 +8,7 @@ import type { Category } from "../src/lib/types";
 
 const supabase = createClient(
   process.env.SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  { realtime: { enabled: false } }
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
 const deepseekApiKey = process.env.DEEPSEEK_API_KEY!;
