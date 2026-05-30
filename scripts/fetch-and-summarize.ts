@@ -7,7 +7,7 @@ import type { Category } from "../src/lib/types";
 // --- Config ---
 
 const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
