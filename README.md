@@ -2,6 +2,26 @@
 
 AI & Embedded 行业资讯聚合平台，每日自动抓取 RSS、生成中文摘要。
 
+## 当前进度
+
+### 已完成
+- [x] 项目搭建 (Next.js 14 + TypeScript + TailwindCSS)
+- [x] Supabase 数据库建表 + RLS 权限配置
+- [x] RSS 抓取管道 (GitHub Actions 每日定时执行)
+- [x] Landing Page (Hero + 分类选择)
+- [x] 资讯列表页 (文章卡片、日期切换、收藏功能)
+- [x] 设置页 (API Key、主题切换)
+- [x] Vercel 部署 + GitHub Actions 工作流
+- [x] Supabase 已有数据 (RSS 抓取正常运行)
+
+### 待完成
+- [ ] 接入 DeepSeek API 生成中文摘要 (目前摘要直接使用文章标题)
+- [ ] UI 美化
+
+### 已知问题
+
+（暂无）
+
 ## 技术栈
 
 - **前端**: Next.js 14 (App Router) + TypeScript + TailwindCSS
@@ -49,3 +69,4 @@ AI & Embedded 行业资讯聚合平台，每日自动抓取 RSS、生成中文�
    - `SUPABASE_SERVICE_ROLE_KEY`
    - `DEEPSEEK_API_KEY`
 2. 工作流会每天 22:50 UTC (北京时间 6:50) 自动运行
+

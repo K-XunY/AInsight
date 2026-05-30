@@ -31,6 +31,12 @@ export default function NewsFeedPage({
     }
 
     const res = await fetch(`/api/articles?${searchParams}`);
+    if (!res.ok) {
+      console.error("Failed to fetch articles:", await res.json());
+      setArticles([]);
+      setLoading(false);
+      return;
+    }
     const data = await res.json();
     setArticles(data.articles || []);
     setLoading(false);
@@ -44,18 +50,29 @@ export default function NewsFeedPage({
     articleId: string,
     isFavorited: boolean
   ) => {
-    const method = isFavorited ? "DELETE" : "POST";
-    await fetch("/api/favorites", {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ article_id: articleId }),
-    });
     // Optimistic update
     setArticles((prev) =>
       prev.map((a) =>
         a.id === articleId ? { ...a, is_favorited: !isFavorited } : a
       )
     );
+
+    const method = isFavorited ? "DELETE" : "POST";
+    const res = await fetch("/api/favorites", {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ article_id: articleId }),
+    });
+
+    if (!res.ok) {
+      // Revert on failure
+      setArticles((prev) =>
+        prev.map((a) =>
+          a.id === articleId ? { ...a, is_favorited: isFavorited } : a
+        )
+      );
+      console.error("Favorite toggle failed:", await res.json());
+    }
   };
 
   const categoryLabel = category === "ai" ? "AI" : "Embedded";
