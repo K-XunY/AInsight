@@ -2,9 +2,11 @@
 ALTER TABLE articles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE favorites ENABLE ROW LEVEL SECURITY;
 
--- Grant table-level permissions to anon role
+-- Grant table-level permissions
 GRANT SELECT ON articles TO anon;
 GRANT SELECT, INSERT, DELETE ON favorites TO anon;
+GRANT ALL ON articles TO service_role;
+GRANT ALL ON favorites TO service_role;
 
 
 -- Articles: anyone can read, only service role can insert/update/delete

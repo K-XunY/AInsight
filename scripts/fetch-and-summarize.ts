@@ -1,4 +1,5 @@
-import "dotenv/config";
+import dotenv from "dotenv";
+dotenv.config({ path: ".env.local" });
 import Parser from "rss-parser";
 import { createClient } from "@supabase/supabase-js";
 import { generateSummary } from "../src/lib/deepseek";
@@ -11,7 +12,7 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
-const deepseekApiKey = process.env.DEEPSEEK_API_KEY!;
+const deepseekApiKey = process.env.DEEPSEEK_API_KEY || "";
 
 interface RssSource {
   name: string;
@@ -207,12 +208,26 @@ async function main() {
     return;
   }
 
-  console.log("Step 3: Generating summaries...");
-  const summarized = await summarizeBatch(newArticles);
-  console.log(`Generated ${summarized.length} summaries.`);
+  let articlesToInsert: {
+    title: string;
+    url: string;
+    source: string;
+    category: Category;
+    publishedAt: Date;
+    summary: string;
+  }[];
+
+  if (deepseekApiKey) {
+    console.log("Step 3: Generating summaries...");
+    articlesToInsert = await summarizeBatch(newArticles);
+    console.log(`Generated ${articlesToInsert.length} summaries.`);
+  } else {
+    console.log("Step 3: Skipping summaries (no DEEPSEEK_API_KEY).");
+    articlesToInsert = newArticles.map((a) => ({ ...a, summary: a.title }));
+  }
 
   console.log("Step 4: Inserting into Supabase...");
-  await insertArticles(summarized);
+  await insertArticles(articlesToInsert);
 
   console.log("Pipeline complete.");
 }
