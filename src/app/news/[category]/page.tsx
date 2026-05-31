@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import ArticleCard from "@/components/ArticleCard";
 import DateSelector from "@/components/DateSelector";
@@ -15,9 +16,23 @@ export default function NewsFeedPage({
   params: { category: Category };
 }) {
   const { category } = params;
+  const pathname = usePathname();
   const [articles, setArticles] = useState<ArticleWithFavorite[]>([]);
   const [loading, setLoading] = useState(true);
-  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
+
+  function formatDate(d: Date): string {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${y}-${m}-${day}`;
+  }
+
+  const [date, setDate] = useState(() => formatDate(new Date()));
+
+  // Reset to today when navigating to this page
+  useEffect(() => {
+    setDate(formatDate(new Date()));
+  }, [pathname]);
 
   const fetchArticles = useCallback(async () => {
     setLoading(true);
@@ -114,12 +129,12 @@ export default function NewsFeedPage({
         ) : articles.length === 0 ? (
           <div className="text-center py-20">
             <p className="text-muted-foreground mb-4">No articles for this date</p>
-            {date !== new Date().toISOString().split("T")[0] && (
+            {date !== formatDate(new Date()) && (
               <Button
                 variant="secondary"
                 size="sm"
                 className="gap-1.5 rounded-full"
-                onClick={() => setDate(new Date().toISOString().split("T")[0])}
+                onClick={() => setDate(formatDate(new Date()))}
               >
                 <ArrowLeft size={14} />
                 Back to today
