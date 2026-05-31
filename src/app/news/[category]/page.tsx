@@ -2,11 +2,12 @@
 
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import ArticleCard from "@/components/ArticleCard";
 import DateSelector from "@/components/DateSelector";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
 import type { ArticleWithFavorite, Category } from "@/lib/types";
-
-type Tab = "today" | "bookmarked";
 
 export default function NewsFeedPage({
   params,
@@ -16,19 +17,15 @@ export default function NewsFeedPage({
   const { category } = params;
   const [articles, setArticles] = useState<ArticleWithFavorite[]>([]);
   const [loading, setLoading] = useState(true);
-  const [tab, setTab] = useState<Tab>("today");
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
 
   const fetchArticles = useCallback(async () => {
     setLoading(true);
     const searchParams = new URLSearchParams({
       category,
-      tab,
+      tab: "today",
+      date,
     });
-
-    if (tab === "today") {
-      searchParams.set("date", date);
-    }
 
     const res = await fetch(`/api/articles?${searchParams}`);
     if (!res.ok) {
@@ -40,7 +37,7 @@ export default function NewsFeedPage({
     const data = await res.json();
     setArticles(data.articles || []);
     setLoading(false);
-  }, [category, tab, date]);
+  }, [category, date]);
 
   useEffect(() => {
     fetchArticles();
@@ -50,7 +47,6 @@ export default function NewsFeedPage({
     articleId: string,
     isFavorited: boolean
   ) => {
-    // Optimistic update
     setArticles((prev) =>
       prev.map((a) =>
         a.id === articleId ? { ...a, is_favorited: !isFavorited } : a
@@ -65,7 +61,6 @@ export default function NewsFeedPage({
     });
 
     if (!res.ok) {
-      // Revert on failure
       setArticles((prev) =>
         prev.map((a) =>
           a.id === articleId ? { ...a, is_favorited: isFavorited } : a
@@ -78,58 +73,58 @@ export default function NewsFeedPage({
   const categoryLabel = category === "ai" ? "AI" : "Embedded";
 
   return (
-    <main className="min-h-screen py-8 px-4">
-      <div className="max-w-3xl mx-auto">
+    <main className="min-h-screen py-8 px-4 sm:px-6">
+      <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="mb-6">
           <Link
             href="/news"
-            className="text-blue-600 hover:underline text-sm"
+            className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
-            &larr; 切换分类
+            <ArrowLeft size={14} />
+            切换分类
           </Link>
-          <h1 className="text-3xl font-bold mt-2">{categoryLabel} 资讯</h1>
+          <h1 className="text-2xl font-bold tracking-tight mt-2">
+            {categoryLabel} 资讯
+          </h1>
         </div>
 
-        {/* Tabs */}
-        <div className="flex gap-4 mb-4 border-b border-gray-200">
-          <button
-            onClick={() => setTab("today")}
-            className={`pb-2 text-sm font-medium transition ${
-              tab === "today"
-                ? "border-b-2 border-blue-600 text-blue-600"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
-          >
-            今日
-          </button>
-          <button
-            onClick={() => setTab("bookmarked")}
-            className={`pb-2 text-sm font-medium transition ${
-              tab === "bookmarked"
-                ? "border-b-2 border-blue-600 text-blue-600"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
-          >
-            收藏
-          </button>
+        {/* Date selector */}
+        <div className="mb-6">
+          <DateSelector selectedDate={date} onChange={setDate} />
         </div>
-
-        {/* Date selector (only in today tab) */}
-        {tab === "today" && (
-          <div className="mb-6">
-            <DateSelector selectedDate={date} onChange={setDate} />
-          </div>
-        )}
 
         {/* Article list */}
         {loading ? (
-          <div className="text-center text-gray-400 py-20">加载中...</div>
+          <div className="flex flex-col gap-4">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="rounded-xl border border-border bg-card p-5">
+                <div className="flex items-center gap-2 mb-3">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-4 w-4 rounded-full" />
+                  <Skeleton className="h-4 w-16" />
+                </div>
+                <Skeleton className="h-6 w-3/4 mb-2" />
+                <Skeleton className="h-6 w-1/2 mb-3" />
+                <Skeleton className="h-4 w-full mb-1" />
+                <Skeleton className="h-4 w-2/3" />
+              </div>
+            ))}
+          </div>
         ) : articles.length === 0 ? (
-          <div className="text-center text-gray-400 py-20">
-            {tab === "bookmarked"
-              ? "还没有收藏的文章"
-              : "该日期暂无资讯"}
+          <div className="text-center py-20">
+            <p className="text-muted-foreground mb-4">该日期暂无资讯</p>
+            {date !== new Date().toISOString().split("T")[0] && (
+              <Button
+                variant="secondary"
+                size="sm"
+                className="gap-1.5 rounded-full"
+                onClick={() => setDate(new Date().toISOString().split("T")[0])}
+              >
+                <ArrowLeft size={14} />
+                回到今天
+              </Button>
+            )}
           </div>
         ) : (
           <div className="flex flex-col gap-4">
