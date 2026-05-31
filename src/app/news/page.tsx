@@ -7,7 +7,7 @@ export default function NewsPage() {
       <div className="max-w-4xl mx-auto">
         <Link
           href="/"
-          className="text-blue-600 hover:underline text-sm mb-6 inline-block"
+          className="text-primary hover:underline text-sm mb-6 inline-block"
         >
           &larr; 返回首页
         </Link>

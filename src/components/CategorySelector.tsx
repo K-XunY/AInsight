@@ -20,10 +20,10 @@ export default function CategorySelector() {
         <Link
           key={cat.slug}
           href={`/news/${cat.slug}`}
-          className="block rounded-2xl border border-gray-200 bg-white p-8 text-center shadow-sm transition hover:shadow-md hover:border-blue-300"
+          className="block rounded-2xl border border-border bg-card p-8 text-center shadow-sm transition hover:shadow-md hover:border-primary/50"
         >
-          <h2 className="text-2xl font-bold text-gray-800">{cat.name}</h2>
-          <p className="mt-2 text-gray-500">{cat.description}</p>
+          <h2 className="text-2xl font-bold text-card-foreground">{cat.name}</h2>
+          <p className="mt-2 text-muted-foreground">{cat.description}</p>
         </Link>
       ))}
     </div>
