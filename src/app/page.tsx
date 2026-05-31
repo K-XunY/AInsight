@@ -117,7 +117,7 @@ export default function Home() {
         className="py-20 px-4"
       >
         <h2 className="text-center text-2xl font-bold tracking-tight mb-10">
-          选择资讯类别
+          Choose a Category
         </h2>
         <CategorySelector />
       </section>

@@ -82,10 +82,10 @@ export default function NewsFeedPage({
             className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft size={14} />
-            切换分类
+            Switch category
           </Link>
           <h1 className="text-2xl font-bold tracking-tight mt-2">
-            {categoryLabel} 资讯
+            {categoryLabel} News
           </h1>
         </div>
 
@@ -113,7 +113,7 @@ export default function NewsFeedPage({
           </div>
         ) : articles.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-muted-foreground mb-4">该日期暂无资讯</p>
+            <p className="text-muted-foreground mb-4">No articles for this date</p>
             {date !== new Date().toISOString().split("T")[0] && (
               <Button
                 variant="secondary"
@@ -122,7 +122,7 @@ export default function NewsFeedPage({
                 onClick={() => setDate(new Date().toISOString().split("T")[0])}
               >
                 <ArrowLeft size={14} />
-                回到今天
+                Back to today
               </Button>
             )}
           </div>

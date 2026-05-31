@@ -55,7 +55,7 @@ export default function FavoritesPage() {
         {/* Header */}
         <div className="mb-6 flex items-center gap-3">
           <Star size={24} className="text-amber-500" />
-          <h1 className="text-2xl font-bold tracking-tight">收藏</h1>
+          <h1 className="text-2xl font-bold tracking-tight">Favorites</h1>
           {!loading && (
             <Badge variant="secondary">{articles.length}</Badge>
           )}
@@ -81,9 +81,9 @@ export default function FavoritesPage() {
         ) : articles.length === 0 ? (
           <div className="text-center py-20">
             <Star size={48} className="mx-auto mb-4 text-muted-foreground/30" />
-            <p className="text-muted-foreground mb-4">还没有收藏的文章</p>
+            <p className="text-muted-foreground mb-4">No favorites yet</p>
             <Button variant="outline" asChild>
-              <a href="/news/ai">去浏览资讯</a>
+              <a href="/news/ai">Browse articles</a>
             </Button>
           </div>
         ) : (

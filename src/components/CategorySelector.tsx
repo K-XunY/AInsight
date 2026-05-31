@@ -1,16 +1,8 @@
 import Link from "next/link";
 
 const categories = [
-  {
-    slug: "ai",
-    name: "AI",
-    description: "人工智能行业资讯",
-  },
-  {
-    slug: "embedded",
-    name: "Embedded",
-    description: "嵌入式系统行业资讯",
-  },
+  { slug: "ai", name: "AI" },
+  { slug: "embedded", name: "Embedded" },
 ];
 
 export default function CategorySelector() {
@@ -23,7 +15,6 @@ export default function CategorySelector() {
           className="block rounded-2xl border border-border bg-card p-8 text-center shadow-sm transition hover:shadow-md hover:border-primary/50"
         >
           <h2 className="text-2xl font-bold text-card-foreground">{cat.name}</h2>
-          <p className="mt-2 text-muted-foreground">{cat.description}</p>
         </Link>
       ))}
     </div>

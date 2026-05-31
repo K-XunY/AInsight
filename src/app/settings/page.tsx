@@ -10,12 +10,12 @@ export default function SettingsPage() {
           className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           <ArrowLeft size={14} />
-          返回首页
+          Back to Home
         </Link>
 
-        <h1 className="text-2xl font-bold tracking-tight mt-2 mb-6">设置</h1>
+        <h1 className="text-2xl font-bold tracking-tight mt-2 mb-6">Settings</h1>
 
-        <p className="text-muted-foreground text-sm">暂无更多设置项</p>
+        <p className="text-muted-foreground text-sm">No settings available</p>
       </div>
     </main>
   );

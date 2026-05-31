@@ -9,9 +9,9 @@ export default function NewsPage() {
           href="/"
           className="text-primary hover:underline text-sm mb-6 inline-block"
         >
-          &larr; 返回首页
+          &larr; Back to Home
         </Link>
-        <h1 className="text-3xl font-bold text-center mb-10">资讯分类</h1>
+        <h1 className="text-3xl font-bold text-center mb-10">Categories</h1>
         <CategorySelector />
       </div>
     </main>
