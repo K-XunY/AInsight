@@ -64,3 +64,58 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* AINSIGHT gradient text with shimmer */
+.ainsight-title {
+  background: linear-gradient(
+    135deg,
+    #ec4899 0%,
+    #818cf8 25%,
+    #6366f1 50%,
+    #a78bfa 75%,
+    #ec4899 100%
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: ainsight-gradient 6s ease infinite;
+  position: relative;
+}
+
+.ainsight-title::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.25) 45%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0.25) 55%,
+    transparent 60%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: ainsight-shimmer 4s ease-in-out infinite;
+}
+
+@keyframes ainsight-gradient {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes ainsight-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
