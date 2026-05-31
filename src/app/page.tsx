@@ -19,7 +19,7 @@ export default function Home() {
           <h1 className="ainsight-title text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
             AINSIGHT
           </h1>
-          <p className="mt-4 text-lg text-muted-foreground max-w-lg text-center sm:text-xl">
+          <p className="mt-4 font-mono text-lg font-light tracking-wider text-muted-foreground max-w-lg text-center sm:text-xl">
             AI & Embedded industry news, aggregated daily with AI-powered Chinese summaries
           </p>
         </div>
