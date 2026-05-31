@@ -28,9 +28,13 @@ export default function Home() {
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <button
             onClick={scrollToCategories}
-            className="pointer-events-auto rounded-full bg-gradient-to-r from-pink-500 via-indigo-500 to-violet-500 px-16 py-6 text-2xl font-semibold text-white shadow-lg transition hover:shadow-xl active:scale-95"
+            className="hero-button pointer-events-auto group relative rounded-full px-16 py-6 text-2xl font-semibold text-white transition-transform duration-300 hover:scale-105 active:scale-95"
           >
-            What&apos;s New?
+            <span className="hero-button-bg absolute inset-0 rounded-full bg-gradient-to-r from-pink-500 via-indigo-500 to-violet-500" />
+            <span className="hero-button-glow absolute inset-0 rounded-full bg-gradient-to-r from-pink-500 via-indigo-500 to-violet-500 blur-xl opacity-50 group-hover:opacity-80 transition-opacity duration-300" />
+            <span className="hero-button-shimmer absolute inset-0 rounded-full overflow-hidden" />
+            <span className="hero-button-ring absolute -inset-1 rounded-full border-2 border-white/0 group-hover:border-white/30 transition-all duration-500 group-hover:inset-[-6px]" />
+            <span className="relative z-10">What&apos;s New?</span>
           </button>
         </div>
       </section>
