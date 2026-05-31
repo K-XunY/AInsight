@@ -273,15 +273,15 @@
 
 /* SVG connection lines */
 .hero-line {
-  stroke: rgba(129, 140, 248, 0.45);
-  stroke-width: 1.2;
-  stroke-dasharray: 8 5;
+  stroke: rgba(129, 140, 248, 0.25);
+  stroke-width: 1;
+  stroke-dasharray: 6 4;
   animation: line-pulse 4s ease-in-out infinite;
 }
 
 @keyframes line-pulse {
-  0%, 100% { stroke-opacity: 0.35; }
-  50% { stroke-opacity: 0.7; }
+  0%, 100% { stroke-opacity: 0.2; }
+  50% { stroke-opacity: 0.5; }
 }
 
 /* Data particles */
