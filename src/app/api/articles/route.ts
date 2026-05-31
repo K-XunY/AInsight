@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
     .from("articles")
     .select("*")
     .order("published_at", { ascending: false })
-    .limit(50);
+    .limit(20);
 
   if (category) {
     query = query.eq("category", category);
