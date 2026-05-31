@@ -1,72 +1,105 @@
 "use client";
 
 import { useState } from "react";
-import type { ArticleWithFavorite } from "@/lib/types";
+import { Star, ChevronDown, ChevronUp } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+import type { ArticleWithFavorite, Category } from "@/lib/types";
 
 interface Props {
   article: ArticleWithFavorite;
   onToggleFavorite: (articleId: string, isFavorited: boolean) => void;
 }
 
+function formatRelativeTime(dateStr: string): string {
+  const now = Date.now();
+  const then = new Date(dateStr).getTime();
+  const diffMs = now - then;
+  const diffMin = Math.floor(diffMs / 60000);
+  if (diffMin < 60) return `${diffMin}分钟前`;
+  const diffHr = Math.floor(diffMin / 60);
+  if (diffHr < 24) return `${diffHr}小时前`;
+  const diffDay = Math.floor(diffHr / 24);
+  return `${diffDay}天前`;
+}
+
+const categoryColors: Record<Category, string> = {
+  ai: "bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300",
+  embedded:
+    "bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-300",
+};
+
 export default function ArticleCard({ article, onToggleFavorite }: Props) {
   const [expanded, setExpanded] = useState(false);
-
-  const publishedDate = new Date(article.published_at).toLocaleDateString(
-    "zh-CN",
-    { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" }
-  );
+  const relativeTime = formatRelativeTime(article.published_at);
 
   return (
-    <article className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md">
-      <div className="flex items-start justify-between gap-3">
-        <div className="flex-1 min-w-0">
-          <a
-            href={article.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-lg font-semibold text-gray-900 hover:text-blue-600 line-clamp-2"
-          >
-            {article.title}
-          </a>
-          <div className="mt-1 flex items-center gap-2 text-sm text-gray-400">
-            <span>{article.source}</span>
-            <span>&middot;</span>
-            <span>{publishedDate}</span>
-          </div>
+    <article className="rounded-xl border border-border bg-card p-5 transition-all duration-200 hover:shadow-lg hover:shadow-indigo-100 hover:border-indigo-400 hover:-translate-y-0.5 dark:hover:shadow-indigo-900/20 dark:hover:border-indigo-600 animate-fade-in">
+      {/* Source row */}
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <span className="font-medium">{article.source}</span>
+          <span>·</span>
+          <span>{relativeTime}</span>
         </div>
-
         <button
-          onClick={() => onToggleFavorite(article.id, article.is_favorited)}
-          className="shrink-0 p-2 rounded-full hover:bg-gray-100 transition"
+          onClick={() =>
+            onToggleFavorite(article.id, article.is_favorited)
+          }
+          className="shrink-0 p-1.5 rounded-full hover:bg-accent transition"
           aria-label={article.is_favorited ? "取消收藏" : "收藏"}
         >
-          {article.is_favorited ? (
-            <svg className="w-5 h-5 text-yellow-500 fill-current" viewBox="0 0 20 20">
-              <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
-            </svg>
-          ) : (
-            <svg className="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-            </svg>
-          )}
+          <Star
+            size={18}
+            className={cn(
+              "transition-all",
+              article.is_favorited
+                ? "fill-amber-500 text-amber-500 dark:fill-amber-400 dark:text-amber-400"
+                : "text-muted-foreground"
+            )}
+          />
         </button>
       </div>
 
+      {/* Title */}
+      <a
+        href={article.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-2 block text-lg font-semibold text-card-foreground hover:text-indigo-600 dark:hover:text-indigo-400 line-clamp-2 transition-colors"
+      >
+        {article.title}
+      </a>
+
+      {/* Summary preview */}
       {article.summary && (
         <div className="mt-3">
+          <p className={cn("text-sm text-muted-foreground leading-relaxed", !expanded && "line-clamp-2")}>
+            {article.summary}
+          </p>
           <button
             onClick={() => setExpanded(!expanded)}
-            className="text-sm text-blue-500 hover:underline"
+            className="mt-1 flex items-center gap-1 text-xs text-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
           >
-            {expanded ? "收起摘要" : "展开摘要"}
+            {expanded ? (
+              <>
+                收起摘要 <ChevronUp size={14} />
+              </>
+            ) : (
+              <>
+                展开摘要 <ChevronDown size={14} />
+              </>
+            )}
           </button>
-          {expanded && (
-            <p className="mt-2 text-sm text-gray-600 leading-relaxed">
-              {article.summary}
-            </p>
-          )}
         </div>
       )}
+
+      {/* Category badge */}
+      <div className="mt-3">
+        <Badge variant="secondary" className={cn("text-xs", categoryColors[article.category])}>
+          {article.category === "ai" ? "AI" : "Embedded"}
+        </Badge>
+      </div>
     </article>
   );
 }
