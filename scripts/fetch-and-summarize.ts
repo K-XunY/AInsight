@@ -190,6 +190,27 @@ async function insertArticles(
   console.log(`Inserted ${rows.length} articles.`);
 }
 
+// --- Cleanup ---
+
+async function cleanupOldArticles(retentionDays = 100) {
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - retentionDays);
+  const cutoffStr = cutoff.toISOString();
+
+  const { data, error } = await supabase
+    .from("articles")
+    .delete()
+    .lt("published_at", cutoffStr)
+    .select("id");
+
+  if (error) {
+    console.error("Cleanup error:", error);
+    return;
+  }
+
+  console.log(`Cleaned up ${data?.length || 0} articles older than ${retentionDays} days.`);
+}
+
 // --- Main ---
 
 async function main() {
@@ -228,6 +249,9 @@ async function main() {
 
   console.log("Step 4: Inserting into Supabase...");
   await insertArticles(articlesToInsert);
+
+  console.log("Step 5: Cleaning up old articles...");
+  await cleanupOldArticles(100);
 
   console.log("Pipeline complete.");
 }
