@@ -16,7 +16,7 @@ export default function Home() {
       <section className="relative min-h-screen px-4">
         {/* Title & Tagline — upper area */}
         <div className="flex flex-col items-center pt-40 sm:pt-48">
-          <h1 className="ainsight-title text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
+          <h1 className="ainsight-title text-7xl font-bold tracking-tight sm:text-8xl lg:text-9xl">
             AINSIGHT
           </h1>
           <p className="mt-4 font-mono text-lg font-light tracking-wider text-muted-foreground max-w-lg text-center sm:text-xl">
