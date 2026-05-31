@@ -26,9 +26,9 @@ export default function DateSelector({ selectedDate, onChange }: Props) {
   const today = new Date();
   const todayStr = formatDate(today);
 
-  // Build a 7-day window: 6 days ago through today
+  // Build a 30-day window: 29 days ago through today
   const days: Date[] = [];
-  for (let i = 6; i >= 0; i--) {
+  for (let i = 29; i >= 0; i--) {
     const d = new Date(today);
     d.setDate(d.getDate() - i);
     days.push(d);
