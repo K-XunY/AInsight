@@ -22,9 +22,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             href="/"
             className="font-bold text-lg tracking-tight"
           >
-            <span className="bg-gradient-to-r from-indigo-500 to-violet-500 bg-clip-text text-transparent">
-              AI
-            </span>
+            <span className="text-foreground">AI</span>
             nsight
           </Link>
 
