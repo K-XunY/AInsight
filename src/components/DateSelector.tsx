@@ -1,71 +1,59 @@
 "use client";
 
+import { CalendarIcon } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 interface Props {
   selectedDate: string; // YYYY-MM-DD
   onChange: (date: string) => void;
 }
 
-const WEEKDAY_NAMES = ["日", "一", "二", "三", "四", "五", "六"];
-
 function formatDate(d: Date): string {
-  return d.toISOString().split("T")[0];
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
 }
 
-function getWeekdayName(d: Date): string {
-  return "周" + WEEKDAY_NAMES[d.getDay()];
-}
-
-function getDateNumber(d: Date): string {
-  return String(d.getDate());
+function parseDate(s: string): Date {
+  const [y, m, d] = s.split("-").map(Number);
+  return new Date(y, m - 1, d);
 }
 
 export default function DateSelector({ selectedDate, onChange }: Props) {
+  const selected = parseDate(selectedDate);
   const today = new Date();
-  const todayStr = formatDate(today);
+  today.setHours(0, 0, 0, 0);
 
-  // Build a 30-day window: 29 days ago through today
-  const days: Date[] = [];
-  for (let i = 29; i >= 0; i--) {
-    const d = new Date(today);
-    d.setDate(d.getDate() - i);
-    days.push(d);
-  }
+  const display = selected.toLocaleDateString("en", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+  });
 
   return (
-    <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none">
-      {days.map((d) => {
-        const dateStr = formatDate(d);
-        const isSelected = dateStr === selectedDate;
-        const isTodayDate = dateStr === todayStr;
-
-        return (
-          <Button
-            key={dateStr}
-            variant={isSelected ? "default" : "ghost"}
-            size="sm"
-            onClick={() => onChange(dateStr)}
-            className={cn(
-              "flex flex-col items-center gap-0.5 rounded-lg min-w-[3rem] px-2 py-1 h-auto",
-              isSelected
-                ? "bg-primary text-primary-foreground shadow hover:bg-primary/90"
-                : "text-muted-foreground hover:text-foreground"
-            )}
-          >
-            <span className="text-[11px] leading-tight font-medium">
-              {getWeekdayName(d)}
-            </span>
-            <span className="text-sm leading-tight font-semibold">
-              {getDateNumber(d)}
-            </span>
-            {isTodayDate && !isSelected && (
-              <span className="w-1 h-1 rounded-full bg-primary mt-0.5" />
-            )}
-          </Button>
-        );
-      })}
-    </div>
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="outline" size="sm" className="gap-2 rounded-lg">
+          <CalendarIcon size={14} />
+          <span>{display}</span>
+          {selectedDate === formatDate(today) && (
+            <span className="text-xs text-primary font-medium">Today</span>
+          )}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0" align="start">
+        <Calendar
+          mode="single"
+          selected={selected}
+          onSelect={(day) => {
+            if (day) onChange(formatDate(day));
+          }}
+          disabled={(day) => day > today}
+        />
+      </PopoverContent>
+    </Popover>
   );
 }
