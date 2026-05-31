@@ -53,3 +53,40 @@ export async function DELETE(request: NextRequest) {
 
   return NextResponse.json({ success: true });
 }
+
+// GET: fetch all favorited articles
+export async function GET() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+
+  const res = await fetch(
+    `${supabaseUrl}/rest/v1/favorites?select=created_at,articles(*)`,
+    {
+      cache: "no-store",
+      headers: {
+        apikey: serviceKey,
+        Authorization: `Bearer ${serviceKey}`,
+      },
+    }
+  );
+
+  const data = await res.json();
+
+  if (!Array.isArray(data)) {
+    return NextResponse.json({ articles: [] });
+  }
+
+  const articles = data
+    .filter((f) => f.articles)
+    .map((f) => ({
+      ...f.articles,
+      is_favorited: true,
+      favorited_at: f.created_at,
+    }))
+    .sort(
+      (a, b) =>
+        new Date(b.favorited_at).getTime() - new Date(a.favorited_at).getTime()
+    );
+
+  return NextResponse.json({ articles });
+}
