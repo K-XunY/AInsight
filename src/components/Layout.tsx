@@ -22,8 +22,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             href="/"
             className="font-bold text-lg tracking-tight"
           >
-            <span className="text-foreground">AI</span>
-            nsight
+            <span className="text-foreground">AI</span>nsight
           </Link>
 
           <div className="hidden md:flex items-center gap-6">
@@ -75,7 +74,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <footer className="border-t border-border py-6 text-center text-sm text-muted-foreground">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 flex items-center justify-between">
           <span>© AInsight</span>
-          <span>Powered by DeepSeek</span>
         </div>
       </footer>
 

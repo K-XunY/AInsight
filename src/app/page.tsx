@@ -1,8 +1,6 @@
 "use client";
 
 import { useRef } from "react";
-import { ChevronDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import CategorySelector from "@/components/CategorySelector";
 
 export default function Home() {
@@ -15,36 +13,33 @@ export default function Home() {
   return (
     <main>
       {/* Hero */}
-      <section className="relative flex flex-col items-center justify-start pt-[20vh] min-h-screen px-4">
-        {/* Subtle gradient background */}
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_bottom,rgba(99,102,241,0.08),transparent_70%)] dark:bg-[radial-gradient(ellipse_at_bottom,rgba(129,140,248,0.06),transparent_70%)]" />
-
-        <div className="animate-fade-in text-center">
-          <h1 className="text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl text-white">
+      <section className="relative min-h-screen px-4">
+        {/* Title & Tagline — upper area */}
+        <div className="flex flex-col items-center pt-40 sm:pt-48">
+          <h1 className="text-5xl font-bold tracking-tight text-foreground sm:text-6xl lg:text-7xl">
             AINSIGHT
           </h1>
-          <p className="mt-4 text-lg text-muted-foreground max-w-lg mx-auto sm:text-xl">
-            AI & Embedded industry news, aggregated daily with Chinese summaries
+          <p className="mt-4 text-lg text-muted-foreground max-w-lg text-center sm:text-xl">
+            AI & Embedded industry news, aggregated daily with AI-powered Chinese summaries
           </p>
-          <div className="mt-16 flex justify-center">
-            <Button
-              size="lg"
-              onClick={scrollToCategories}
-              className="rounded-full px-16 py-8 text-2xl font-bold text-white bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 shadow-[0_0_30px_rgba(168,85,247,0.15)] hover:shadow-[0_0_40px_rgba(168,85,247,0.25)] transition-all"
-            >
-              What&apos;s New?
-            </Button>
-          </div>
         </div>
 
-        <ChevronDown
-          size={24}
-          className="absolute bottom-8 text-muted-foreground animate-bounce"
-        />
+        {/* Button — vertically centered in viewport */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <button
+            onClick={scrollToCategories}
+            className="pointer-events-auto rounded-full bg-gradient-to-r from-pink-500 via-indigo-500 to-violet-500 px-16 py-6 text-2xl font-semibold text-white shadow-lg transition hover:shadow-xl active:scale-95"
+          >
+            What&apos;s New?
+          </button>
+        </div>
       </section>
 
       {/* Category Selection */}
-      <section ref={sectionRef} className="py-20 px-4">
+      <section
+        ref={sectionRef}
+        className="py-20 px-4"
+      >
         <h2 className="text-center text-2xl font-bold tracking-tight mb-10">
           选择资讯类别
         </h2>
