@@ -41,9 +41,10 @@ export async function GET(request: NextRequest) {
   }
 
   if (date) {
-    const start = `${date}T00:00:00Z`;
-    const end = `${date}T23:59:59Z`;
-    query = query.gte("published_at", start).lte("published_at", end);
+    // Treat the date as Beijing time (UTC+8) and convert to UTC range
+    const start = new Date(`${date}T00:00:00+08:00`).toISOString();
+    const end = new Date(`${date}T23:59:59+08:00`).toISOString();
+    query = query.gte("fetched_at", start).lte("fetched_at", end);
   }
 
   if (tab === "bookmarked") {
